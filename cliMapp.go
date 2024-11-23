@@ -1,14 +1,21 @@
 package main
 
 import (
-    "fmt"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
 
 func mapp(conf *config) error {
+    if conf.previous == "" {
+        err := errors.New("Already on the first page")
+        log.Fatal(err)
+        return err
+    }
     req, err := http.NewRequest("GET", conf.previous, nil)
     if err != nil {
         return err
@@ -32,6 +39,8 @@ func mapp(conf *config) error {
     }
     conf.next = pokeRes.Next
     conf.previous = pokeRes.Previous
-    fmt.Println(conf.next, conf.previous)
+    for _, result := range pokeRes.Results {
+            fmt.Println(result.Name)
+    }
     return nil
 }   

@@ -31,6 +31,10 @@ func mapn(conf *config) error {
 	}
 	conf.next = pokeRes.Next
 	conf.previous = pokeRes.Previous
-	fmt.Println(conf.next, conf.previous)
+
+	for _, result := range pokeRes.Results {
+		fmt.Println(result.Name)
+	}
+
 	return nil
 }
