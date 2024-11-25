@@ -2,6 +2,7 @@ package main
 import ("fmt"
     "bufio"
     "os"
+    "strings"
 )
 
 func start(){
@@ -11,8 +12,9 @@ func start(){
         scanner.Scan()
         input := scanner.Text()
         fmt.Print("\n")
-        cmd := getCommands(input)
-
+        c := separateInput(input, "cmd")
+        param := separateInput(input, "param")
+        cmd := getCommands(c, param)
         cmd.function()
     }
 }
@@ -33,9 +35,11 @@ type pokeResponse struct {
 	} `json:"results"`
 }
 
+
 type config struct {
     next	string
     previous	string
+    caught      []pokemonResponse
 }
 
 var conf = config{
@@ -43,7 +47,7 @@ var conf = config{
     previous: "",
 }
 
-func getCommands(cmd string) cliCommand {
+func getCommands(cmd string, param string) cliCommand {
 
     command :=  map[string]cliCommand {
         "help": {
@@ -70,8 +74,32 @@ func getCommands(cmd string) cliCommand {
                     return maps(&conf, "previous")
                 },
             },
+        "explore": {
+            name: "Explore",
+            description: "Shows pokemons in the area",
+            function: func() error {
+                return explore(param)
+            },
+        },
+        "catch": {
+            name: "Catch",
+            description: "Tries to catch a pokemon",
+            function: func() error {
+                return catch(param, &conf.caught)
+            },
+        },
     }
     return command[cmd]
 
 }
 
+func separateInput(input string, whatIWant string) string {
+    parameter := strings.Fields(input)
+    if len(parameter) == 1 {
+        return input
+    }
+    if whatIWant== "cmd"{
+        return parameter[0]
+    }
+   return parameter[1]
+}
