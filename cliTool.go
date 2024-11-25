@@ -46,30 +46,30 @@ var conf = config{
 func getCommands(cmd string) cliCommand {
 
     command :=  map[string]cliCommand {
-    "help": {
-            name: "Help",
-            description: "Brief summay on how to use the tool",
-            function: help,
-        },
-    "exit": {
-            name: "Exit",
-            description: "Exits the program",
-            function: exit,
-        },
-    "mapn": {
-            name: "Map",
-            description: "Shows the next 20 locations",
-            function: func() error {
-                return mapn(&conf)
+        "help": {
+                name: "Help",
+                description: "Brief summay on how to use the tool",
+                function: help,
             },
-        },
-    "mapp": {
-            name: "Map",
-            description: "Shows the previous 20 locations",
-            function: func() error {
-                return mapp(&conf)
+        "exit": {
+                name: "Exit",
+                description: "Exits the program",
+                function: exit,
             },
-        },
+        "mapn": {
+                name: "Map",
+                description: "Shows the next 20 locations",
+                function: func() error {
+                    return maps(&conf, "next")
+                },
+            },
+        "mapp": {
+                name: "Map",
+                description: "Shows the previous 20 locations",
+                function: func() error {
+                    return maps(&conf, "previous")
+                },
+            },
     }
     return command[cmd]
 
