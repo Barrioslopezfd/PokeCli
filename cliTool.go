@@ -10,6 +10,10 @@ func start(){
         fmt.Print("pokedex > ")
         scanner := bufio.NewScanner(os.Stdin)
         scanner.Scan()
+        if err := scanner.Err(); err != nil {
+            fmt.Println("Error reading input:", err)
+            return
+        }
         input := scanner.Text()
         fmt.Print("\n")
         c := separateInput(input, "cmd")
@@ -48,13 +52,15 @@ var conf = config{
     caught: make(map[string]pokemonResponse),
 }
 
+var command = make(map[string]cliCommand)
 func getCommands(cmd string, param string) cliCommand {
-
-    command :=  map[string]cliCommand {
+    command = map[string]cliCommand{
         "help": {
                 name: "Help",
                 description: "Brief summay on how to use the tool",
-                function: help,
+                function: func() error {
+                    return help(command)
+                },
             },
         "exit": {
                 name: "Exit",
@@ -104,8 +110,10 @@ func getCommands(cmd string, param string) cliCommand {
             },
         },
     }
+    if _, ok := command[cmd]; !ok {
+        return command["help"]
+    }
     return command[cmd]
-
 }
 
 func separateInput(input string, whatIWant string) string {
