@@ -39,12 +39,13 @@ type pokeResponse struct {
 type config struct {
     next	string
     previous	string
-    caught      []pokemonResponse
+    caught      map[string]pokemonResponse
 }
 
 var conf = config{
     next: "https://pokeapi.co/api/v2/location-area",
     previous: "",
+    caught: make(map[string]pokemonResponse),
 }
 
 func getCommands(cmd string, param string) cliCommand {
@@ -86,6 +87,20 @@ func getCommands(cmd string, param string) cliCommand {
             description: "Tries to catch a pokemon",
             function: func() error {
                 return catch(param, &conf.caught)
+            },
+        },
+        "inspect": {
+            name: "Inspect",
+            description: "Inspects a caught pokemon",
+            function: func() error {
+                return inspect(param, &conf.caught)
+            },
+        },
+        "pokedex": {
+            name: "Pokedex",
+            description: "Shows caught pokemon",
+            function: func() error {
+                return pokedex(&conf.caught)
             },
         },
     }

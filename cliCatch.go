@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
+	//"math/rand"
 	"github.com/Barrioslopezfd/PokeCli/internal/pokefetch"
 )
 
@@ -278,7 +278,7 @@ type pokemonResponse struct {
 	Weight int `json:"weight"`
 }
 
-func catch(pokemon string, caught *[]pokemonResponse) error {
+func catch(pokemon string, caught *map[string]pokemonResponse) error {
     url := "https://pokeapi.co/api/v2/pokemon/"+pokemon
     pokemonRes := pokemonResponse{}
     res,err := pokefetch.PokeFetch(url)
@@ -289,13 +289,13 @@ func catch(pokemon string, caught *[]pokemonResponse) error {
     if err != nil {
 	return err
     }
-    firstRoll := rand.Intn(pokemonRes.BaseExperience) + 1
-    secondRoll := rand.Intn(pokemonRes.BaseExperience) + 1
-    if firstRoll == secondRoll {
-	*caught = append(*caught, pokemonRes)
-	fmt.Println("Caught!")
+    //firstRoll := rand.Intn(pokemonRes.BaseExperience) + 1
+    //secondRoll := rand.Intn(pokemonRes.BaseExperience) + 1
+    if 1 == 1 {
+		(*caught)[pokemon]=pokemonRes
+		fmt.Println("Caught!")
     } else {
-	fmt.Println("Escaped!")
+		fmt.Println("Escaped!")
     }
     return nil
 }

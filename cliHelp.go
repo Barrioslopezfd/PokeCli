@@ -11,5 +11,8 @@ func help() error {
     fmt.Println("Exit: Exits the program")
     fmt.Println("Mapn: Show next 20 map locations")
     fmt.Println("Mapp: Show previous 20 map locations")
+	fmt.Println("Explore <area>: Show the pokemon that spawn on the passed area")
+	fmt.Println("Catch <pokemon>: Tries to catch the passed pokemon")
+	fmt.Println("Inspect <pokemon>: Inspect a pokemon IF catched")
     return nil
 }
